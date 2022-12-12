@@ -1,0 +1,18 @@
+---
+import { gql } from "graphql-request";
+const { node } = Astro.props;
+
+import Page from "../templates/Page.svelte"
+import { useQuery } from '../../lib/api';
+
+const data = await useQuery(gql`
+  query GetPage($databaseId: ID!) {
+    page(id: $databaseId, idType: DATABASE_ID) {
+      title
+      content
+    }
+  }
+`, {databaseId: node.databaseId});
+---
+<h1>{node.name} - Page in Svelte</h1>
+<Page props={data} />

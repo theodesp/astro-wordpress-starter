@@ -1,45 +1,16 @@
 ---
 import MainLayout from "../layouts/MainLayout.astro";
-import Archive from "../components/templates/Archive.astro";
-import Single from "../components/templates/Single.astro";
 import { getNodeByURI, getAllUris } from "../lib/api";
+import { getWordPressProps } from "../lib/getWordPressProps";
 const uri = `/${Astro.params.uri}/`;
-const data = await getNodeByURI(uri);
-const node = data.nodeByUri;
-
-export async function getStaticPaths(){
+const { template: Template, seedNode: pageData } = await getWordPressProps({
+    uri: Astro.params.uri,
+});
+export async function getStaticPaths() {
     return await getAllUris();
 }
-
-function resolveContentTemplate(node){ 
-    let template;
-    switch(node.__typename){
-        case 'Post':
-            template = Single;
-            break; 
-        case 'Page':
-            template = Single;
-            break; 
-        case 'Category':
-            template = Archive;
-            break; 
-        case 'Tag':
-            template = Archive;
-            break; 
-        default: 
-            template = Single;
-    }
-
-    return template;
-}
-
-const Template = resolveContentTemplate(node)
-
 ---
 
-<MainLayout 
- title={ node.title || node.name}
- description={ node.excerpt }
->
-        <Template node={node}></Template>
+<MainLayout title={"Title"} description={"Description"}>
+    <Template node={pageData}></Template>
 </MainLayout>
