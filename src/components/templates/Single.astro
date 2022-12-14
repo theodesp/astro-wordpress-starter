@@ -6,4 +6,4 @@ const data = await useQuery(Single.query, Single.variables(node));
 
 ---
 <h1>{node.name} - Single Post in React</h1>
-<Single {...data} />
+<Single data={data} />

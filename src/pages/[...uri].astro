@@ -1,13 +1,17 @@
 ---
 import MainLayout from "../layouts/MainLayout.astro";
-import { getNodeByURI, getAllUris } from "../lib/api";
+import { getAllUris } from "../lib/api";
 import { getWordPressProps } from "../lib/getWordPressProps";
-const uri = `/${Astro.params.uri}/`;
 const { template: Template, seedNode: pageData } = await getWordPressProps({
     uri: Astro.params.uri,
 });
 export async function getStaticPaths() {
     return await getAllUris();
+}
+
+const url = new URL(Astro.request.url);
+if (url.searchParams.has('preview')) {
+    return Astro.redirect(`/preview?${url.searchParams.toString()}`);
 }
 ---
 

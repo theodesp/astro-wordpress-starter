@@ -1,14 +1,16 @@
-const api = "http://mysite.local/graphql";
+
 import client from "./client";
 import { SEED_QUERY } from "../queries/seedQuery";
+import { getWpUrl } from "./utils";
+const api = getWpUrl();
 
 export async function seedQuery(uri) {
   const data = await client.request(SEED_QUERY, { uri });
   return data;
 }
 
-export async function useQuery(query, variables) {
-  const data = await client.request(query, variables);
+export async function useQuery(query, variables, headers = {}) {
+  const data = await client.request(query, variables, headers);
   return data;
 }
 export async function navQuery() {
